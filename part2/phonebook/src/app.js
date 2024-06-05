@@ -2,38 +2,54 @@ import { useEffect, useState } from "react";
 import Search from "./components/search";
 import AddNewForm from "./components/addnewform";
 import Persons from "./components/persons";
+import Notification from "./components/notification";
 
-import axios from "axios";
+import recordService from "./services/recordservice";
 
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [searchValue, setSearchValue] = useState("");
+	const [notification, setNotification] = useState({
+		status: "success",
+		message: "",
+	});
 
 	useEffect(() => {
-		const fetchPersons = async () => {
-			await axios
-				.get("http://localhost:3001/persons")
-				.then((response) => {
-					if (response.status === 200) {
-						setPersons(response.data);
-					}
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		};
-
-		fetchPersons();
+		recordService.getAll().then((initialPersons) => {
+			setPersons(initialPersons);
+		});
 	}, []);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setNotification({
+				status: "success",
+				message: "jaahas nyt",
+			});
+		}, 5000);
+	}, [notification]);
 
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification
+				status={notification.status}
+				message={notification.message}
+			/>
 			<Search searchValue={searchValue} setSearchValue={setSearchValue} />
 			<h2>Add a new</h2>
-			<AddNewForm persons={persons} setPersons={setPersons} />
+			<AddNewForm
+				persons={persons}
+				setPersons={setPersons}
+				setNotification={setNotification}
+			/>
 			<h2>Numbers</h2>
-			<Persons persons={persons} searchValue={searchValue} />
+			<Persons
+				persons={persons}
+				setPersons={setPersons}
+				searchValue={searchValue}
+				setNotification={setNotification}
+			/>
 		</div>
 	);
 };

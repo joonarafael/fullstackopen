@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import recordService from "../services/recordservice";
+
 const AddNewForm = (props) => {
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
@@ -17,14 +19,68 @@ const AddNewForm = (props) => {
 			number: newNumber,
 		};
 
-		if (props.persons.find((person) => person.name === newName)) {
-			alert(`${newName} is already added to phonebook`);
-			return;
+		const existingPerson = props.persons.find(
+			(person) => person.name === newName
+		);
+
+		if (existingPerson) {
+			if (
+				window.confirm(
+					`${existingPerson.name} is already added to the phonebook, replace the old number with a new one?`
+				)
+			) {
+				personObject.id = existingPerson.id;
+
+				recordService
+					.update(existingPerson.id, personObject)
+					.then((returnedPerson) => {
+						props.setPersons(
+							props.persons.map((person) =>
+								person.id !== returnedPerson.id ? person : returnedPerson
+							)
+						);
+
+						props.setNotification({
+							status: "success",
+							message: `Updated number for ${returnedPerson.name}.`,
+						});
+					})
+					.catch((err) => {
+						console.log(err);
+
+						props.setNotification({
+							status: "error",
+							message: `DB operation failed.`,
+						});
+					});
+
+				return;
+			} else {
+				return;
+			}
 		}
 
-		props.setPersons(props.persons.concat(personObject));
-		setNewName("");
-		setNewNumber("");
+		recordService
+			.create(personObject)
+			.then((returnedPerson) => {
+				props.setPersons(props.persons.concat(returnedPerson));
+
+				setNewName("");
+				setNewNumber("");
+
+				props.setNotification({
+					status: "success",
+					message: `Added ${returnedPerson.name} to the phonebook!`,
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+
+				props.setNotification({
+					status: "error",
+					message: `DB operation failed.`,
+				});
+			});
 	};
 
 	return (
