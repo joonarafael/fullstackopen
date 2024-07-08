@@ -50,6 +50,33 @@ describe("Basic API routes are working", async () => {
 		assert.strictEqual(res.body.length, helper.BLOGS.length + 1);
 	});
 
+	test("Test removing a blog", async () => {
+		let res = await api.get("/api/blogs");
+
+		const blogIdToRemove = res.body[0].id;
+
+		res = await api.delete(`/api/blogs/${blogIdToRemove}`);
+
+		assert.strictEqual(res.status, 200);
+	});
+
+	test("Test updating a blog", async () => {
+		let res = await api.get("/api/blogs");
+
+		const blogIdToUpdate = res.body[0].id;
+
+		const newBlog = {
+			author: "John Doe Updated",
+			title: "An updated blog",
+			url: "https://www.example.com",
+			likes: 3,
+		};
+
+		res = await api.put(`/api/blogs/${blogIdToUpdate}`).send(newBlog);
+
+		assert.strictEqual(res.status, 200);
+	});
+
 	test("Blog like count is initialized to 0 if not provided", async () => {
 		const blog = {
 			author: "John Doe",
@@ -97,5 +124,7 @@ describe("Basic API routes are working", async () => {
 });
 
 after(async () => {
+	await Blog.deleteMany({});
+
 	await mongoose.connection.close();
 });
