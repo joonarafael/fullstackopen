@@ -45,8 +45,84 @@ const totalLikes = (blogs) => {
 	return res;
 };
 
+const mostBlogs = (blogs) => {
+	if (!blogs || blogs.length === 0) {
+		return null;
+	}
+
+	let res = null;
+
+	try {
+		const authors = blogs.map((blog) => blog.author);
+
+		const author = authors.reduce((acc, curr) => {
+			acc[curr] = (acc[curr] || 0) + 1;
+			return acc;
+		}, {});
+
+		const mostBlogs = Math.max(...Object.values(author));
+
+		const mostBlogsAuthor = Object.keys(author).find(
+			(key) => author[key] === mostBlogs
+		);
+
+		res = {
+			author: mostBlogsAuthor,
+			blogs: mostBlogs,
+		};
+	} catch (error) {
+		logger.error(
+			"Encountered an error while determining author with the most blogs:",
+			error.message
+		);
+	}
+
+	return res;
+};
+
+const mostLikes = (blogs) => {
+	if (!blogs || blogs.length === 0) {
+		return null;
+	}
+
+	let res = null;
+
+	try {
+		const authors = blogs.map((blog) => blog.author);
+
+		const author = authors.reduce((acc, curr) => {
+			acc[curr] = acc[curr] || 0;
+			return acc;
+		}, {});
+
+		for (const blog of blogs) {
+			author[blog.author] += blog.likes;
+		}
+
+		const mostLikes = Math.max(...Object.values(author));
+
+		const mostLikesAuthor = Object.keys(author).find(
+			(key) => author[key] === mostLikes
+		);
+
+		res = {
+			author: mostLikesAuthor,
+			likes: mostLikes,
+		};
+	} catch (error) {
+		logger.error(
+			"Encountered an error while determining author with the most likes:",
+			error.message
+		);
+	}
+
+	return res;
+};
+
 module.exports = {
-	favoriteBlog,
 	dummy,
+	favoriteBlog,
+	mostBlogs,
+	mostLikes,
 	totalLikes,
 };
