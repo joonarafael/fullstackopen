@@ -2,26 +2,35 @@ const { test, describe, after, beforeEach } = require("node:test");
 const assert = require("node:assert");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
+const Blog = require("../models/blog");
 const User = require("../models/user");
 
 const app = require("../app");
 const api = supertest(app);
 
+let TOKEN;
+
 beforeEach(async () => {
+	await Blog.deleteMany({});
 	await User.deleteMany({});
 
-	const user = {
+	const testUser = {
 		username: "root",
 		name: "Superuser",
 		password: "admin",
 	};
 
-	await api.post("/api/users").send(user);
+	await api.post("/api/users").send(testUser);
+	const res = await api.post("/api/auth/login").send(testUser);
+
+	TOKEN = res.body.token;
 });
 
 describe("Basic API routes are working", async () => {
 	test("Test GET `/api/users`", async () => {
-		const res = await api.get("/api/users");
+		const res = await api
+			.get("/api/users")
+			.set("Authorization", `Bearer ${TOKEN}`);
 
 		assert.strictEqual(res.status, 200);
 		assert.strictEqual(res.body.length, 1);
@@ -77,6 +86,7 @@ describe("Basic API routes are working", async () => {
 });
 
 after(async () => {
+	await Blog.deleteMany({});
 	await User.deleteMany({});
 
 	await mongoose.connection.close();

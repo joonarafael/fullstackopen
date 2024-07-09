@@ -5,13 +5,15 @@ const User = require("../models/user.js");
 
 usersRouter.get("/api/users", async (request, response) => {
 	try {
-		const res = await User.find({}).populate("blogs", {
-			title: 1,
-			author: 1,
-			url: 1,
-			likes: 1,
-			id: 1,
-		});
+		const res = await User.find({})
+			.select("username name _id")
+			.populate("blogs", {
+				title: 1,
+				author: 1,
+				url: 1,
+				likes: 1,
+				id: 1,
+			});
 
 		response.json(res);
 	} catch (err) {
