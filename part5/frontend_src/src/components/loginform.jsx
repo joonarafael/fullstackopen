@@ -2,7 +2,9 @@ import { useState } from "react";
 
 import authService from "../services/authservice";
 
-const LoginForm = (props) => {
+import PropTypes from "prop-types";
+
+const LoginForm = ({ setNotification }) => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -26,7 +28,7 @@ const LoginForm = (props) => {
 
 			window.open("/", "_self");
 		} else {
-			props.setNotification({
+			setNotification({
 				status: "error",
 				message: "Login failed. Please check your credentials.",
 			});
@@ -48,6 +50,10 @@ const LoginForm = (props) => {
 			</div>
 		</form>
 	);
+};
+
+LoginForm.propTypes = {
+	setNotification: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

@@ -17,10 +17,10 @@ const App = () => {
 	const addNewFormRef = useRef();
 
 	useEffect(() => {
-		const userFromLS = localStorage.getItem("user");
+		const userFromLS = window.localStorage.getItem("user");
 
 		if (userFromLS && userFromLS.length > 0) {
-			setUser(JSON.parse(localStorage.getItem("user")));
+			setUser(JSON.parse(window.localStorage.getItem("user")));
 		}
 	}, []);
 
@@ -38,7 +38,9 @@ const App = () => {
 			const blogsResponse = await blogService.getAll();
 
 			if (blogsResponse) {
-				setBlogs(blogsResponse);
+				const sortedBlogs = [...blogsResponse];
+				sortedBlogs.sort((a, b) => b.likes - a.likes);
+				setBlogs(sortedBlogs);
 			} else {
 				setNotification({
 					status: "error",
@@ -70,7 +72,7 @@ const App = () => {
 			<p>Logged in as {user.name}</p>
 			<button
 				onClick={() => {
-					localStorage.removeItem("user");
+					window.localStorage.removeItem("user");
 					window.open("/", "_self");
 				}}
 			>
