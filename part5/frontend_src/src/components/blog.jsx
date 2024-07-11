@@ -12,6 +12,7 @@ const Blog = (props) => {
 				border: "solid",
 				borderWidth: 1,
 			}}
+			className="blog"
 		>
 			<p>
 				<strong>{props.blog.title}</strong>

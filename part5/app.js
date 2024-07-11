@@ -38,6 +38,11 @@ app.use("/", blogsRouter);
 app.use("/", usersRouter);
 app.use("/", loginRouter);
 
+if (process.env.NODE_ENV === "test") {
+	const testingRouter = require("./controllers/testing");
+	app.use("/api/testing", testingRouter);
+}
+
 app.use(express.static(path.join(__dirname, "build")));
 
 app.use(middleware.unknownEndpoint);

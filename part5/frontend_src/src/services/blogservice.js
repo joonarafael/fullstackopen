@@ -3,10 +3,10 @@ import axios from "axios";
 const BASE_URL = "http://localhost:3001";
 
 const getAll = async () => {
-	const user = JSON.parse(window.localStorage.getItem("user"));
-	const token = user.token;
-
 	try {
+		const user = JSON.parse(window.localStorage.getItem("user"));
+		const token = user.token;
+
 		const response = await axios.get(`${BASE_URL}/api/blogs`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -22,10 +22,10 @@ const getAll = async () => {
 };
 
 const addNew = async (blog) => {
-	const user = JSON.parse(window.localStorage.getItem("user"));
-	const token = user.token;
-
 	try {
+		const user = JSON.parse(window.localStorage.getItem("user"));
+		const token = user.token;
+
 		const response = await axios.post(`${BASE_URL}/api/blogs`, blog, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -41,13 +41,13 @@ const addNew = async (blog) => {
 };
 
 const likeBlog = async (blog) => {
-	const user = JSON.parse(window.localStorage.getItem("user"));
-	const token = user.token;
-
-	const blogId = blog.id;
-	blog.likes = blog.likes + 1;
-
 	try {
+		const user = JSON.parse(window.localStorage.getItem("user"));
+		const token = user.token;
+
+		const blogId = blog.id;
+		blog.likes = blog.likes + 1;
+
 		const response = await axios.put(`${BASE_URL}/api/blogs/${blogId}`, blog, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -63,12 +63,12 @@ const likeBlog = async (blog) => {
 };
 
 const deleteBlog = async (blog) => {
-	const user = JSON.parse(window.localStorage.getItem("user"));
-	const token = user.token;
-
-	const blogId = blog.id;
-
 	try {
+		const user = JSON.parse(window.localStorage.getItem("user"));
+		const token = user.token;
+
+		const blogId = blog.id;
+
 		const response = await axios.delete(`${BASE_URL}/api/blogs/${blogId}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,

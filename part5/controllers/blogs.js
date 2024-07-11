@@ -81,8 +81,6 @@ blogsRouter.delete("/api/blogs/:id", async (request, response) => {
 	try {
 		const blog = await Blog.findById(id);
 
-		console.log("pissing myself", blog);
-
 		if (!blog) {
 			return response.status(404).json({ error: "Invalid blog ID!" });
 		}
