@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { notificationChange } from "../reducers/notificationReducer";
 
-const NewAnecdote = (props) => {
+const NewAnecdote = () => {
 	const dispatch = useDispatch();
 
 	const addAnecdote = (event) => {
