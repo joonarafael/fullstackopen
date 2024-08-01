@@ -26,6 +26,10 @@ const Authors = (props) => {
 	const [born, setBorn] = useState("");
 	const [editAuthor] = useMutation(EDIT_AUTHOR);
 
+	const result = useQuery(ALL_AUTHORS, {
+		pollInterval: 2000,
+	});
+
 	if (!props.show) {
 		return null;
 	}
@@ -40,10 +44,6 @@ const Authors = (props) => {
 		setSelectedAuthor("");
 		setBorn("");
 	};
-
-	const result = useQuery(ALL_AUTHORS, {
-		pollInterval: 2000,
-	});
 
 	if (!props.show) {
 		return null;
