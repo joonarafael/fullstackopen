@@ -27,7 +27,7 @@ const Authors = (props) => {
 	const [editAuthor] = useMutation(EDIT_AUTHOR);
 
 	const result = useQuery(ALL_AUTHORS, {
-		pollInterval: 2000,
+		pollInterval: 10000,
 	});
 
 	if (!props.show) {
@@ -53,7 +53,7 @@ const Authors = (props) => {
 		return <div>loading...</div>;
 	}
 
-	const authors = result.data.allAuthors;
+	const authors = result?.data?.allAuthors ?? [];
 
 	const authorOptions = authors.map((a) => ({
 		value: a.name,
