@@ -1,0 +1,16 @@
+{
+	"name": "ex1to7",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"ts-node": "ts-node",
+		"calculateBmi": "ts-node bmiCalculator.ts -- -s",
+		"calculateExercises": "ts-node exerciseCalculator.ts -- -s"
+	},
+	"devDependencies": {
+		"@types/node": "^22.1.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.5.4"
+	}
+}
