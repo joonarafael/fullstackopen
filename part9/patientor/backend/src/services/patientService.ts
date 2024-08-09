@@ -1,5 +1,10 @@
+/* eslint @typescript-eslint/no-unsafe-assignment: 0 */
+/* eslint @typescript-eslint/no-unsafe-call: 0 */
+
+import { v4 as uuidv4 } from "uuid";
+
 import data from "../data/patients";
-import { NonSensitivePatient } from "../types";
+import { Gender, NonSensitivePatient, Patient, PatientToDB } from "../types";
 
 const getAllNonSensitive = (): NonSensitivePatient[] => {
 	const nonSensitivePatients: NonSensitivePatient[] = data.map(
@@ -7,7 +12,7 @@ const getAllNonSensitive = (): NonSensitivePatient[] => {
 			id,
 			name,
 			dateOfBirth,
-			gender,
+			gender: gender as Gender,
 			occupation,
 		})
 	);
@@ -15,6 +20,16 @@ const getAllNonSensitive = (): NonSensitivePatient[] => {
 	return nonSensitivePatients;
 };
 
+const addPatient = (patient: PatientToDB) => {
+	const completedPatient: Patient = {
+		...patient,
+		id: uuidv4(),
+	};
+
+	data.push(completedPatient);
+};
+
 export default {
 	getAllNonSensitive,
+	addPatient,
 };

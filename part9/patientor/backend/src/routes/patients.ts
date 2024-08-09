@@ -1,11 +1,34 @@
+/* eslint @typescript-eslint/no-unsafe-assignment: 0 */
+
 import express from "express";
 
 import patientService from "../services/patientService";
+import { parsePatientToDB } from "../types/validators/parsePatientToDB";
 
 const router = express.Router();
 
 router.get("/", (_req, res) => {
 	res.send(patientService.getAllNonSensitive());
+});
+
+router.post("/", (req, res) => {
+	const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+
+	const parsedEntry = parsePatientToDB({
+		name,
+		dateOfBirth,
+		ssn,
+		gender,
+		occupation,
+	});
+
+	if (parsedEntry) {
+		patientService.addPatient(parsedEntry);
+
+		res.status(200).send();
+	} else {
+		res.status(400).send();
+	}
 });
 
 export default router;
