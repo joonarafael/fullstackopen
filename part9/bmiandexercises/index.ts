@@ -41,6 +41,7 @@ app.post("/exercises", (req, res) => {
 
 	// .map() will throw an error if daily_exercises is not an array
 	try {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		dailyExercises = daily_exercises.map((e: any) => {
 			const num = Number(e);
 
@@ -51,6 +52,8 @@ app.post("/exercises", (req, res) => {
 			return num;
 		});
 	} catch (e) {
+		console.log(e);
+
 		return res.status(400).json({ error: "Malformatted parameters." });
 	}
 
