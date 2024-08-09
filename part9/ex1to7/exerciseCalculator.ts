@@ -14,7 +14,7 @@ interface Result {
 	average: number;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
 	dailyHours: Array<number>,
 	target: number
 ): Result => {
@@ -61,5 +61,5 @@ try {
 	const [target, exercies] = parseExArguments(process.argv);
 	console.log(calculateExercises(exercies, target));
 } catch (e) {
-	console.log("Error, something bad happened, message: ", e.message);
+	console.log("Error, something bad happened, message: ", e);
 }

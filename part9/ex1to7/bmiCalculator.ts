@@ -47,7 +47,7 @@ const BMI: BMICategory[] = [
 	},
 ];
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
 	const bmi = weight / Math.pow(height / 100, 2);
 
 	for (let i = 0; i < BMI.length; i++) {

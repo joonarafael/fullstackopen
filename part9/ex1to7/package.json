@@ -6,11 +6,23 @@
 	"scripts": {
 		"ts-node": "ts-node",
 		"calculateBmi": "ts-node bmiCalculator.ts -- -s",
-		"calculateExercises": "ts-node exerciseCalculator.ts -- -s"
+		"calculateExercises": "ts-node exerciseCalculator.ts -- -s",
+		"start": "ts-node index.ts",
+		"dev": "ts-node-dev --respawn index.ts"
 	},
 	"devDependencies": {
+		"@eslint/js": "^9.8.0",
+		"@stylistic/eslint-plugin": "^2.6.2",
+		"@types/eslint__js": "^8.42.3",
+		"@types/express": "^4.17.21",
 		"@types/node": "^22.1.0",
+		"eslint": "^9.8.0",
 		"ts-node": "^10.9.2",
-		"typescript": "^5.5.4"
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.5.4",
+		"typescript-eslint": "^8.0.1"
+	},
+	"dependencies": {
+		"express": "^4.19.2"
 	}
 }
