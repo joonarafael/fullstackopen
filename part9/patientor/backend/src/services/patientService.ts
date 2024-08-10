@@ -4,7 +4,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 import data from "../data/patients";
-import { Gender, NonSensitivePatient, Patient, PatientToDB } from "../types";
+import { NonSensitivePatient, Patient, PatientToDB } from "../types";
 
 const getAllNonSensitive = (): NonSensitivePatient[] => {
 	const nonSensitivePatients: NonSensitivePatient[] = data.map(
@@ -12,7 +12,7 @@ const getAllNonSensitive = (): NonSensitivePatient[] => {
 			id,
 			name,
 			dateOfBirth,
-			gender: gender as Gender,
+			gender,
 			occupation,
 		})
 	);
@@ -29,7 +29,18 @@ const addPatient = (patient: PatientToDB) => {
 	data.push(completedPatient);
 };
 
+const findById = (id: string): Patient | undefined => {
+	const patient = data.find((p) => p.id === id);
+
+	if (!patient) {
+		return undefined;
+	}
+
+	return patient;
+};
+
 export default {
 	getAllNonSensitive,
 	addPatient,
+	findById,
 };

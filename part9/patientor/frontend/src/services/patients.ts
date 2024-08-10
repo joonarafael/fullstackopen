@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { apiBaseUrl } from "../constants";
-import { Patient, PatientFormValues } from "../types";
+import { apiBaseUrl } from '../constants';
+import { Patient, PatientFormValues } from '../types';
 
 axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 
@@ -17,7 +17,14 @@ const create = async (object: PatientFormValues) => {
 	return data;
 };
 
+const getById = async (id: string) => {
+	const { data } = await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
+
+	return data;
+};
+
 export default {
 	getAll,
 	create,
+	getById,
 };
