@@ -1,19 +1,22 @@
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-/* eslint @typescript-eslint/no-unsafe-member-access: 0 */
-/* eslint @typescript-eslint/no-unsafe-assignment: 0 */
-/* eslint @typescript-eslint/no-unsafe-argument: 0 */
-
 import { Gender, PatientToDB } from "../";
 
 const isString = (text: unknown): text is string => {
 	return typeof text === "string" || text instanceof String;
 };
 
-const isGender = (param: any): param is Gender => {
-	return Object.values(Gender).includes(param);
+const isGender = (param: unknown): param is Gender => {
+	if (!param) {
+		return false;
+	}
+
+	if (typeof param !== "string") {
+		return false;
+	}
+
+	return Object.values(Gender).includes(param as Gender);
 };
 
-export const parsePatientToDB = (input: any): PatientToDB | null => {
+export const parsePatientToDB = (input: unknown): PatientToDB | null => {
 	const parsedPatientToDB: PatientToDB = {
 		name: "",
 		dateOfBirth: "",
@@ -22,32 +25,38 @@ export const parsePatientToDB = (input: any): PatientToDB | null => {
 		occupation: "",
 	};
 
-	if (input.name && isString(input.name)) {
-		parsedPatientToDB.name = input.name;
+	if (!input || typeof input !== "object") {
+		return null;
+	}
+
+	const notActuallySafe = input as PatientToDB;
+
+	if (notActuallySafe.name && isString(notActuallySafe.name)) {
+		parsedPatientToDB.name = notActuallySafe.name;
 	} else {
 		return null;
 	}
 
-	if (input.dateOfBirth && isString(input.dateOfBirth)) {
-		parsedPatientToDB.dateOfBirth = input.dateOfBirth;
+	if (notActuallySafe.dateOfBirth && isString(notActuallySafe.dateOfBirth)) {
+		parsedPatientToDB.dateOfBirth = notActuallySafe.dateOfBirth;
 	} else {
 		return null;
 	}
 
-	if (input.ssn && isString(input.ssn)) {
-		parsedPatientToDB.ssn = input.ssn;
+	if (notActuallySafe.ssn && isString(notActuallySafe.ssn)) {
+		parsedPatientToDB.ssn = notActuallySafe.ssn;
 	} else {
 		return null;
 	}
 
-	if (input.gender && isGender(input.gender)) {
-		parsedPatientToDB.gender = input.gender;
+	if (notActuallySafe.gender && isGender(notActuallySafe.gender)) {
+		parsedPatientToDB.gender = notActuallySafe.gender;
 	} else {
 		return null;
 	}
 
-	if (input.occupation && isString(input.occupation)) {
-		parsedPatientToDB.occupation = input.occupation;
+	if (notActuallySafe.occupation && isString(notActuallySafe.occupation)) {
+		parsedPatientToDB.occupation = notActuallySafe.occupation;
 	} else {
 		return null;
 	}
